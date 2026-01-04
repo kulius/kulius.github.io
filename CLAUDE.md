@@ -105,22 +105,64 @@ author: "蘇勃任"
 ### Docker 啟動
 ```bash
 cd n8n
-docker-compose up -d
+cp .env.example .env          # 複製並編輯環境變數
+docker-compose up -d          # 啟動 n8n
 ```
+
+啟動後訪問：http://localhost:5678
 
 ### 工作流程設計
 檔案位置：`n8n/workflows/daily-content-generation.json`
 
-**四大類別輪替機制**：
-- 根據一年中的第幾天 (`dayOfYear % 4`) 輪流產生不同類別的文章
-- 使用 Gemini API 生成內容
-- 自動透過 GitHub API 建立 Markdown 檔案
+**流程架構**：
+```
+Daily Trigger (08:00)
+    ↓
+Select Category (四大類別輪替)
+    ↓
+RSS 蒐集 (Hacker News / Dev.to / Odoo Blog)
+    ↓
+Merge Data
+    ↓
+Gemini Generate (gemini-2.0-flash-exp)
+    ↓
+Prepare Content
+    ↓
+GitHub Create File (src/content/posts/)
+    ↓
+Facebook Post (可選，預設停用)
+```
+
+**四大類別輪替**：
+| 日期 % 4 | 類別 | slug | 標籤 |
+|----------|------|------|------|
+| 0 | Odoo 客製化開發 | odoo | Odoo, ERP, 客製化 |
+| 1 | AI 智慧應用 | ai | AI, Claude, LLM |
+| 2 | 企業數位轉型 | dt | 數位轉型, ERP, 企業管理 |
+| 3 | 其他開發 | dev | LINE, Svelte, Web開發 |
 
 ### 環境變數 (n8n/.env)
 ```env
-GITHUB_TOKEN=ghp_xxx          # GitHub Personal Access Token
-GEMINI_API_KEY=xxx            # Gemini API Key
+# n8n 登入帳密
+N8N_BASIC_AUTH_USER=admin
+N8N_BASIC_AUTH_PASSWORD=your-secure-password
+
+# GitHub API (必要)
+GITHUB_TOKEN=ghp_xxx
+
+# Gemini API (必要)
+GEMINI_API_KEY=AIzaSy...
+
+# Facebook (可選)
+FB_PAGE_ID=your-page-id
+FB_PAGE_ACCESS_TOKEN=your-token
 ```
+
+### 匯入工作流程
+1. 開啟 n8n (http://localhost:5678)
+2. 點選 Settings > Import from File
+3. 選擇 `n8n/workflows/daily-content-generation.json`
+4. 設定 GitHub Token 憑證 (HTTP Header Auth: `Authorization: token YOUR_TOKEN`)
 
 ---
 

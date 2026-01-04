@@ -6,130 +6,95 @@
         "rule": {
           "interval": [
             {
-              "field": "hours",
-              "hoursInterval": 24
+              "field": "cronExpression",
+              "cronExpression": "0 8 * * *"
             }
           ]
         }
       },
       "id": "schedule-trigger",
-      "name": "Daily Trigger",
+      "name": "Daily Trigger (08:00)",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [
-        0,
-        200
-      ]
+      "position": [0, 200]
     },
     {
       "parameters": {
-        "jsCode": "const c=[{id:\"odoo\",name:\"Odoo 客製化開發\",slug:\"odoo\",tags:[\"Odoo\",\"ERP\"],prompt:\"Odoo ERP開發\"},{id:\"ai\",name:\"AI 智慧應用\",slug:\"ai\",tags:[\"AI\",\"Claude\"],prompt:\"AI工具應用\"},{id:\"digital-transformation\",name:\"企業數位轉型\",slug:\"dt\",tags:[\"數位轉型\",\"ERP\"],prompt:\"數位轉型\"},{id:\"other\",name:\"其他開發\",slug:\"dev\",tags:[\"LINE\",\"Svelte\"],prompt:\"LINE/Svelte開發\"}];const t=new Date();const d=Math.floor((t-new Date(t.getFullYear(),0,0))/(1000*60*60*24));return{json:{category:c[d%c.length],date:t.toISOString().split(\"T\")[0]}};"
+        "jsCode": "// 四大類別定義\nconst categories = [\n  {\n    id: 'odoo',\n    name: 'Odoo 客製化開發',\n    slug: 'odoo',\n    tags: ['Odoo', 'ERP', '客製化'],\n    prompt: '請撰寫一篇關於 Odoo ERP 客製化開發的技術文章，可以包含模組開發、API 整合、工作流程自動化等主題。'\n  },\n  {\n    id: 'ai',\n    name: 'AI 智慧應用',\n    slug: 'ai',\n    tags: ['AI', 'Claude', 'LLM'],\n    prompt: '請撰寫一篇關於 AI 應用的技術文章，可以包含 Claude、ChatGPT、Gemini 等工具的實際應用案例。'\n  },\n  {\n    id: 'dt',\n    name: '企業數位轉型',\n    slug: 'dt',\n    tags: ['數位轉型', 'ERP', '企業管理'],\n    prompt: '請撰寫一篇關於企業數位轉型的策略文章，可以包含 ERP 導入、流程優化、組織變革等主題。'\n  },\n  {\n    id: 'dev',\n    name: '其他開發',\n    slug: 'dev',\n    tags: ['LINE', 'Svelte', 'Web開發'],\n    prompt: '請撰寫一篇關於 LINE Bot、LIFF、Svelte 或其他 Web 開發的技術文章。'\n  }\n];\n\n// 根據日期輪替類別\nconst today = new Date();\nconst dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));\nconst categoryIndex = dayOfYear % categories.length;\nconst selectedCategory = categories[categoryIndex];\n\n// 生成日期字串 (YYYY-MM-DD)\nconst dateStr = today.toISOString().split('T')[0];\n\nreturn {\n  json: {\n    category: selectedCategory,\n    date: dateStr,\n    dateForFilename: dateStr.replace(/-/g, '')\n  }\n};"
       },
       "id": "select-category",
       "name": "Select Category",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        220,
-        200
-      ]
+      "position": [220, 200]
     },
     {
       "parameters": {
-        "url": "https://api.github.com/users/kulius/events",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth"
+        "url": "https://hnrss.org/frontpage?count=5",
+        "options": {}
       },
-      "id": "github-events",
-      "name": "Get GitHub Events",
+      "id": "rss-hn",
+      "name": "RSS Hacker News",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        440,
-        0
-      ]
+      "position": [440, 50]
     },
     {
       "parameters": {
-        "url": "https://www.odoo.com/blog/feed"
+        "url": "https://dev.to/feed",
+        "options": {}
+      },
+      "id": "rss-devto",
+      "name": "RSS Dev.to",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 200]
+    },
+    {
+      "parameters": {
+        "url": "https://www.odoo.com/blog/feed",
+        "options": {}
       },
       "id": "rss-odoo",
       "name": "RSS Odoo",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        440,
-        150
-      ]
+      "position": [440, 350]
     },
     {
       "parameters": {
-        "url": "https://ai.googleblog.com/feeds/posts/default?alt=rss"
+        "jsCode": "// 取得類別資訊\nconst categoryData = $('Select Category').item.json;\nconst category = categoryData.category;\nconst date = categoryData.date;\n\nreturn {\n  json: {\n    category: category,\n    date: date,\n    dateForFilename: categoryData.dateForFilename\n  }\n};"
       },
-      "id": "rss-ai",
-      "name": "RSS AI",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        440,
-        300
-      ]
-    },
-    {
-      "parameters": {
-        "url": "https://dev.to/feed/tag/svelte"
-      },
-      "id": "rss-dev",
-      "name": "RSS Dev",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        440,
-        450
-      ]
-    },
-    {
-      "parameters": {
-        "jsCode": "const i=$input.all();const c=i[0]?.json?.category||{};const d=i[0]?.json?.date;return{json:{category:c,date:d,context:{name:c.name,id:c.id,tags:c.tags,prompt:c.prompt}}};"
-      },
-      "id": "merge",
-      "name": "Merge",
+      "id": "merge-data",
+      "name": "Merge Data",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        700,
-        200
-      ]
+      "position": [660, 200]
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={{ $env.GEMINI_API_KEY }}",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={{ $env.GEMINI_API_KEY }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\"contents\":[{\"parts\":[{\"text\":\"根據{{ $json.context.name }}撰寫繁體中文技術文章(400字)。格式:---\ntitle:\ndescription:\npubDate:{{ $json.date }}\ntags:{{ JSON.stringify($json.context.tags) }}\ncategory:{{ $json.context.id }}\nauthor:蘇勃任\n---\n內容\"}]}],\"generationConfig\":{\"temperature\":0.8}}"
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"你是一位專業的技術部落格作者，請根據以下要求撰寫一篇繁體中文技術文章：\\n\\n類別：{{ $json.category.name }}\\n主題提示：{{ $json.category.prompt }}\\n\\n請撰寫約 800-1200 字的文章，包含：\\n1. 清楚的標題（吸引人但專業）\\n2. 簡短的描述（50-100字）\\n3. 有深度的技術內容\\n4. 實際的程式碼範例（如適用）\\n5. 結論與建議\\n\\n輸出格式必須是 Markdown，frontmatter 格式如下：\\n---\\ntitle: \\\"文章標題\\\"\\ndescription: \\\"文章描述\\\"\\npublished: {{ $json.date }}\\ntags: {{ JSON.stringify($json.category.tags) }}\\ncategory: \\\"{{ $json.category.id }}\\\"\\nauthor: \\\"蘇勃任\\\"\\n---\\n\\n（文章內容）\"\n        }\n      ]\n    }\n  ],\n  \"generationConfig\": {\n    \"temperature\": 0.7,\n    \"topK\": 40,\n    \"topP\": 0.95,\n    \"maxOutputTokens\": 4096\n  }\n}",
+        "options": {}
       },
-      "id": "gemini",
-      "name": "Gemini",
+      "id": "gemini-generate",
+      "name": "Gemini Generate",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        920,
-        200
-      ]
+      "position": [880, 200]
     },
     {
       "parameters": {
-        "jsCode": "const r=$input.item.json;let c=r.candidates?.[0]?.content?.parts?.[0]?.text||\"\";const p=$(\"Merge\").item.json;const s=p.category.slug+\"-\"+p.date.replace(/-/g,\"\")+\"-\"+Date.now().toString(36);return{json:{slug:s,content:c,path:\"src/content/blog/\"+s+\".md\",category:p.category.name}};"
+        "jsCode": "// 解析 Gemini 回應\nconst response = $input.item.json;\nconst categoryData = $('Merge Data').item.json;\n\n// 取得生成的文章內容\nlet content = response.candidates?.[0]?.content?.parts?.[0]?.text || '';\n\n// 清理內容（移除可能的 markdown 程式碼區塊標記）\ncontent = content.replace(/^```markdown\\n?/i, '').replace(/\\n?```$/i, '').trim();\n\n// 生成檔案名稱 (slug)\nconst slug = `${categoryData.category.slug}-${categoryData.dateForFilename}-${Date.now().toString(36)}`;\n\n// 檔案路徑 (Twilight 主題使用 src/content/posts/)\nconst filePath = `src/content/posts/${slug}.md`;\n\nreturn {\n  json: {\n    slug: slug,\n    content: content,\n    path: filePath,\n    category: categoryData.category,\n    date: categoryData.date\n  }\n};"
       },
-      "id": "prep",
-      "name": "Prepare",
+      "id": "prepare-content",
+      "name": "Prepare Content",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        1140,
-        200
-      ]
+      "position": [1100, 200]
     },
     {
       "parameters": {
@@ -139,38 +104,52 @@
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\"message\":\"Add: {{ $json.slug }}\",\"content\":\"{{ Buffer.from($json.content).toString(\"base64\") }}\",\"branch\":\"main\"}"
+        "jsonBody": "={\n  \"message\": \"Auto: 新增文章 {{ $json.slug }}\",\n  \"content\": \"{{ Buffer.from($json.content).toString('base64') }}\",\n  \"branch\": \"main\"\n}",
+        "options": {}
       },
-      "id": "github",
-      "name": "GitHub",
+      "id": "github-create-file",
+      "name": "GitHub Create File",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        1360,
-        200
-      ]
+      "position": [1320, 200],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "GitHub Token",
+          "id": "github-token"
+        }
+      }
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://graph.facebook.com/v18.0/{{ $env.FB_PAGE_ID }}/feed",
+        "url": "=https://graph.facebook.com/v19.0/{{ $env.FB_PAGE_ID }}/feed",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\"message\":\"新文章！{{ $json.category }}\",\"link\":\"https://www.euptop.com/blog/{{ $json.slug }}/\",\"access_token\":\"{{ $env.FB_PAGE_ACCESS_TOKEN }}\"}"
+        "jsonBody": "={\n  \"message\": \"📝 新文章發布！\\n\\n【{{ $json.category.name }}】\\n\\n{{ $json.content.match(/title: \\\"([^\\\"]+)\\\"/)?.[1] || '新文章' }}\\n\\n👉 閱讀全文：https://www.euptop.com/posts/{{ $json.slug }}/\",\n  \"link\": \"https://www.euptop.com/posts/{{ $json.slug }}/\",\n  \"access_token\": \"{{ $env.FB_PAGE_ACCESS_TOKEN }}\"\n}",
+        "options": {}
       },
-      "id": "fb",
-      "name": "Facebook",
+      "id": "facebook-post",
+      "name": "Facebook Post",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        1580,
-        200
-      ],
+      "position": [1540, 200],
       "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## n8n 每日內容生成工作流程\n\n### 流程說明\n1. **每日 08:00 觸發** - 自動執行\n2. **類別輪替** - 根據日期自動選擇類別（Odoo → AI → 數位轉型 → 其他開發）\n3. **蒐集靈感** - 從 RSS 取得最新技術新聞\n4. **AI 生成** - 使用 Gemini API 生成文章\n5. **GitHub 發布** - 自動建立 PR 或直接推送\n6. **社群分享** - 發布到 Facebook（可選）\n\n### 環境變數\n- `GEMINI_API_KEY` - Gemini API 金鑰\n- `GITHUB_TOKEN` - GitHub Personal Access Token\n- `FB_PAGE_ID` - Facebook 粉專 ID（可選）\n- `FB_PAGE_ACCESS_TOKEN` - Facebook 存取權杖（可選）\n\n### 注意事項\n- Twilight 主題使用 `published` 而非 `pubDate`\n- 文章路徑：`src/content/posts/`\n- 網址格式：`/posts/{slug}/`",
+        "height": 520,
+        "width": 400
+      },
+      "id": "sticky-note",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-300, 0]
     }
   ],
   "connections": {
-    "Daily Trigger": {
+    "Daily Trigger (08:00)": {
       "main": [
         [
           {
@@ -185,7 +164,12 @@
       "main": [
         [
           {
-            "node": "Get GitHub Events",
+            "node": "RSS Hacker News",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Dev.to",
             "type": "main",
             "index": 0
           },
@@ -195,23 +179,29 @@
             "index": 0
           },
           {
-            "node": "RSS AI",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "RSS Dev",
+            "node": "Merge Data",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get GitHub Events": {
+    "RSS Hacker News": {
       "main": [
         [
           {
-            "node": "Merge",
+            "node": "Merge Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Dev.to": {
+      "main": [
+        [
+          {
+            "node": "Merge Data",
             "type": "main",
             "index": 0
           }
@@ -222,73 +212,51 @@
       "main": [
         [
           {
-            "node": "Merge",
+            "node": "Merge Data",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "RSS AI": {
+    "Merge Data": {
       "main": [
         [
           {
-            "node": "Merge",
+            "node": "Gemini Generate",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "RSS Dev": {
+    "Gemini Generate": {
       "main": [
         [
           {
-            "node": "Merge",
+            "node": "Prepare Content",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Merge": {
+    "Prepare Content": {
       "main": [
         [
           {
-            "node": "Gemini",
+            "node": "GitHub Create File",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Gemini": {
+    "GitHub Create File": {
       "main": [
         [
           {
-            "node": "Prepare",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Prepare": {
-      "main": [
-        [
-          {
-            "node": "GitHub",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "GitHub": {
-      "main": [
-        [
-          {
-            "node": "Facebook",
+            "node": "Facebook Post",
             "type": "main",
             "index": 0
           }
@@ -297,6 +265,12 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
-  }
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1
 }
