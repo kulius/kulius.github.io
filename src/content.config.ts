@@ -2,22 +2,19 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
-	// Load Markdown and MDX files in the `src/content/blog/` directory.
 	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
-	// Type-check frontmatter using a schema
 	schema: ({ image }) =>
 		z.object({
 			title: z.string(),
 			description: z.string(),
-			// Transform string to Date object
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
-			// New fields for n8n automation
 			tags: z.array(z.string()).default([]),
+			category: z.enum(['odoo', 'ai', 'digital-transformation', 'other']).default('other'),
 			source: z.enum(['github', 'rss', 'manual']).default('manual'),
 			sourceUrl: z.string().url().optional(),
-			author: z.string().default('Kulius'),
+			author: z.string().default('蘇勃任'),
 		}),
 });
 
