@@ -1,21 +1,45 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from "astro:content";
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
-const blog = defineCollection({
-	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
-	schema: ({ image }) =>
-		z.object({
-			title: z.string(),
-			description: z.string(),
-			pubDate: z.coerce.date(),
-			updatedDate: z.coerce.date().optional(),
-			heroImage: image().optional(),
-			tags: z.array(z.string()).default([]),
-			category: z.enum(['odoo', 'ai', 'digital-transformation', 'other']).default('other'),
-			source: z.enum(['github', 'rss', 'manual']).default('manual'),
-			sourceUrl: z.string().url().optional(),
-			author: z.string().default('蘇勃任'),
-		}),
-});
 
-export const collections = { blog };
+const postsCollection = defineCollection({
+    loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/posts" }),
+    schema: z.object({
+        title: z.string(),
+        published: z.date(),
+        updated: z.date().optional(),
+        draft: z.boolean().optional().default(false),
+        description: z.string().optional().default(""),
+        cover: z.string().optional().default(""),
+        tags: z.array(z.string()).optional().default([]),
+        category: z.string().optional().nullable().default(""),
+        lang: z.string().optional().default(""),
+        pinned: z.boolean().optional().default(false),
+        author: z.string().optional().default(""),
+        sourceLink: z.string().optional().default(""),
+        licenseName: z.string().optional().default(""),
+        licenseUrl: z.string().optional().default(""),
+
+        /* Page encryption fields */
+        encrypted: z.boolean().optional().default(false),
+        password: z.string().optional().default(""),
+
+        /* Custom routeName */
+        routeName: z.string().optional(),
+
+        /* For internal use */
+        prevTitle: z.string().default(""),
+        prevSlug: z.string().default(""),
+        nextTitle: z.string().default(""),
+        nextSlug: z.string().default(""),
+    }),
+});
+const specCollection = defineCollection({
+    loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/spec" }),
+    schema: z.object({}),
+});
+export const collections = {
+    posts: postsCollection,
+    spec: specCollection,
+};
