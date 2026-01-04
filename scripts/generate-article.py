@@ -213,6 +213,15 @@ author: "{AUTHOR}"
                 raise
 
     result = response.json()
+
+    # 檢查回應是否有效
+    if "candidates" not in result:
+        error_msg = result.get("error", {}).get("message", "未知錯誤")
+        raise Exception(f"API 回應無效: {error_msg}")
+
+    if not result["candidates"]:
+        raise Exception("API 未返回任何內容")
+
     content = result["candidates"][0]["content"]["parts"][0]["text"]
 
     # 清理可能的 markdown 標記
