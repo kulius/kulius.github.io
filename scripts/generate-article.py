@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 每週文章自動生成腳本
 使用 Gemini API 生成文章，並上傳至 GitHub
@@ -21,6 +22,10 @@ import argparse
 import requests
 from datetime import datetime
 from pathlib import Path
+
+# 修正 Windows 終端機編碼
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 # ============================================================
 # 設定區
@@ -126,8 +131,9 @@ def select_category(category_id: str = None) -> tuple[str, dict]:
     return selected_key, CATEGORIES[selected_key]
 
 
-def generate_article(api_key: str, category_id: str, category: dict) -> str:
+def generate_article(api_key: str, category_id: str, category: dict, max_retries: int = 3) -> str:
     """使用 Gemini API 生成文章"""
+    import time
 
     today = datetime.now().strftime("%Y-%m-%d")
 
@@ -171,7 +177,9 @@ author: "{AUTHOR}"
 - 程式碼區塊請標註語言（如 ```python）
 - 不要輸出任何額外的說明文字，直接輸出 Markdown"""
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={api_key}"
+    # 可用模型: gemini-2.0-flash (推薦), gemini-2.5-flash, gemini-2.0-flash-exp
+    model = "gemini-2.0-flash"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
 
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
@@ -185,8 +193,24 @@ author: "{AUTHOR}"
 
     print("🤖 正在使用 Gemini 生成文章...")
 
-    response = requests.post(url, json=payload, timeout=60)
-    response.raise_for_status()
+    for attempt in range(max_retries):
+        try:
+            response = requests.post(url, json=payload, timeout=120)
+
+            if response.status_code == 429:
+                wait_time = 30 * (attempt + 1)
+                print(f"⏳ API 限流，等待 {wait_time} 秒後重試...")
+                time.sleep(wait_time)
+                continue
+
+            response.raise_for_status()
+            break
+        except requests.exceptions.RequestException as e:
+            if attempt < max_retries - 1:
+                print(f"⚠️ 請求失敗，重試中... ({attempt + 1}/{max_retries})")
+                time.sleep(10)
+            else:
+                raise
 
     result = response.json()
     content = result["candidates"][0]["content"]["parts"][0]["text"]
