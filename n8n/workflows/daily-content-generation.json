@@ -1,0 +1,58 @@
+{
+  "name": "Daily Content Generation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 24 }]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Daily Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/users/kulius/events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth"
+      },
+      "id": "github-events",
+      "name": "Get GitHub Events",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, -100]
+    },
+    {
+      "parameters": {
+        "url": "https://hnrss.org/frontpage"
+      },
+      "id": "rss-hn",
+      "name": "Hacker News RSS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 100]
+    },
+    {
+      "parameters": {
+        "url": "https://dev.to/feed"
+      },
+      "id": "rss-devto",
+      "name": "Dev.to RSS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 300]
+    }
+  ],
+  "connections": {
+    "Daily Trigger": {
+      "main": [[
+        { "node": "Get GitHub Events", "type": "main", "index": 0 },
+        { "node": "Hacker News RSS", "type": "main", "index": 0 },
+        { "node": "Dev.to RSS", "type": "main", "index": 0 }
+      ]]
+    }
+  }
+}
