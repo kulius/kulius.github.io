@@ -8,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://kulius.github.io',
+  site: 'https://www.euptop.com',
   integrations: [mdx(), sitemap()],
 
   vite: {

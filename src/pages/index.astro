@@ -1,48 +1,142 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+).slice(0, 4);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-TW">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			.hero {
+				padding: 4rem 0;
+				text-align: center;
+				background: linear-gradient(135deg, #714B67 0%, #875A7B 100%);
+				color: white;
+				margin: -3em -1em 2em -1em;
+				border-radius: 0 0 2rem 2rem;
+			}
+			.hero h1 {
+				font-size: 2.5rem;
+				margin-bottom: 0.5rem;
+				color: white;
+			}
+			.hero p {
+				font-size: 1.2rem;
+				opacity: 0.9;
+				max-width: 600px;
+				margin: 0 auto;
+			}
+			.expertise {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: 1.5rem;
+				margin: 2rem 0;
+			}
+			.expertise-card {
+				background: white;
+				padding: 1.5rem;
+				border-radius: 12px;
+				box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+				border-left: 4px solid #714B67;
+			}
+			.expertise-card h3 {
+				color: #714B67;
+				margin-bottom: 0.5rem;
+			}
+			.recent-posts h2 {
+				border-bottom: 2px solid #714B67;
+				padding-bottom: 0.5rem;
+				margin-top: 3rem;
+			}
+			.post-list {
+				list-style: none;
+				padding: 0;
+			}
+			.post-list li {
+				padding: 1rem 0;
+				border-bottom: 1px solid rgb(var(--gray-light));
+			}
+			.post-list a {
+				font-size: 1.2rem;
+				font-weight: 600;
+			}
+			.post-date {
+				color: rgb(var(--gray));
+				font-size: 0.9rem;
+			}
+			.cta {
+				text-align: center;
+				margin: 3rem 0;
+				padding: 2rem;
+				background: rgb(var(--gray-light));
+				border-radius: 12px;
+			}
+			.cta a {
+				display: inline-block;
+				background: #714B67;
+				color: white;
+				padding: 0.75rem 2rem;
+				border-radius: 8px;
+				text-decoration: none;
+				font-weight: 600;
+			}
+			.cta a:hover {
+				background: #875A7B;
+			}
+		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<section class="hero">
+				<h1>蘇勃任 | Odoo 技術顧問</h1>
+				<p>專注於 Odoo ERP 客製化開發、AI 整合應用，協助企業打造數位營運核心</p>
+			</section>
+
+			<section class="expertise">
+				<div class="expertise-card">
+					<h3>Odoo 客製化開發</h3>
+					<p>從模組開發到系統整合，提供完整的 Odoo ERP 客製化解決方案</p>
+				</div>
+				<div class="expertise-card">
+					<h3>AI 智慧應用</h3>
+					<p>結合 AI 技術優化企業流程，實現智慧化營運管理</p>
+				</div>
+				<div class="expertise-card">
+					<h3>企業數位轉型</h3>
+					<p>規劃與執行數位轉型策略，提升企業競爭力與營運效率</p>
+				</div>
+			</section>
+
+			<section class="recent-posts">
+				<h2>最新文章</h2>
+				<ul class="post-list">
+					{posts.map((post) => (
+						<li>
+							<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+							<p class="post-date">
+								<FormattedDate date={post.data.pubDate} />
+							</p>
+							<p>{post.data.description}</p>
+						</li>
+					))}
+				</ul>
+			</section>
+
+			<section class="cta">
+				<h2>探索更多 Odoo 實戰經驗</h2>
+				<p>瀏覽完整的技術文章與案例分享</p>
+				<a href="/blog/">查看所有文章</a>
+			</section>
 		</main>
 		<Footer />
 	</body>
