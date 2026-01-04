@@ -44,6 +44,30 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={{ $env.GEMINI_API_KEY }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{\n      \"text\": \"Based on the following data, write a technical blog post in Markdown format.\n\n## GitHub Activity:\n{{ JSON.stringify($json.github) }}\n\n## Requirements:\n1. Write in Traditional Chinese (繁體中文)\n2. Create an engaging title\n3. Write a brief description (1-2 sentences)\n4. Include relevant tags (3-5 tags)\n5. Write the main content (300-500 words)\n6. Format as Astro blog frontmatter:\n\n---\ntitle: \\\"標題\\\"\ndescription: \\\"描述\\\"\npubDate: \\\"{{ $now.format('yyyy-MM-dd') }}\\\"\ntags: [\\\"tag1\\\", \\\"tag2\\\"]\nsource: \\\"rss\\\"\nauthor: \\\"Kulius\\\"\n---\n\n文章內容...\n\nOutput ONLY the complete markdown file content, nothing else.\"\n    }]\n  }],\n  \"generationConfig\": {\n    \"temperature\": 0.7,\n    \"maxOutputTokens\": 2048\n  }\n}"
+      },
+      "id": "gemini-generate",
+      "name": "Gemini Generate Content",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 100]
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.item.json;\nconst content = response.candidates?.[0]?.content?.parts?.[0]?.text || '';\nconst today = new Date();\nconst slug = `auto-${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;\n\nreturn {\n  json: {\n    slug,\n    filename: `${slug}.md`,\n    content: content,\n    path: `src/content/blog/${slug}.md`\n  }\n};"
+      },
+      "id": "prepare-file",
+      "name": "Prepare File",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 100]
     }
   ],
   "connections": {
@@ -52,6 +76,16 @@
         { "node": "Get GitHub Events", "type": "main", "index": 0 },
         { "node": "Hacker News RSS", "type": "main", "index": 0 },
         { "node": "Dev.to RSS", "type": "main", "index": 0 }
+      ]]
+    },
+    "Get GitHub Events": {
+      "main": [[
+        { "node": "Gemini Generate Content", "type": "main", "index": 0 }
+      ]]
+    },
+    "Gemini Generate Content": {
+      "main": [[
+        { "node": "Prepare File", "type": "main", "index": 0 }
       ]]
     }
   }

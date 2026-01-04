@@ -25,10 +25,9 @@ docker-compose up -d
 3. Name: `Authorization`
 4. Value: `Bearer YOUR_GITHUB_TOKEN`
 
-#### Anthropic API
-1. 前往 Settings → Credentials → Add Credential
-2. 選擇 "Anthropic"
-3. 填入你的 API Key
+#### Google Gemini API
+Gemini API 使用 URL 參數傳遞 API Key，已在工作流程中設定。
+只需在 `.env` 中設定 `GEMINI_API_KEY` 即可。
 
 #### Facebook Page Token
 1. 前往 Settings → Credentials → Add Credential
@@ -49,10 +48,7 @@ Schedule Trigger (每日)
     └──► Dev.to RSS
             │
             ▼
-        Code Node: 合併資料
-            │
-            ▼
-        Claude API: 生成 Markdown 文章
+        Gemini API: 生成 Markdown 文章
             │
             ▼
         Code Node: 準備檔案資訊
@@ -95,42 +91,31 @@ URL: https://hnrss.org/frontpage
 URL: https://dev.to/feed
 ```
 
-#### 步驟 3: Code Node - 合併資料
-```javascript
-const githubEvents = $('Get GitHub Events').item.json;
+#### 步驟 3: Gemini API - 生成內容
 
-// 提取最近 commits
-const commits = Array.isArray(githubEvents) 
-  ? githubEvents
-      .filter(e => e.type === 'PushEvent')
-      .slice(0, 5)
-      .map(e => ({
-        repo: e.repo.name,
-        message: e.payload.commits?.[0]?.message,
-        date: e.created_at
-      }))
-  : [];
+使用 HTTP Request 節點呼叫 Gemini API：
 
-return {
-  json: {
-    github: { commits },
-    generatedAt: new Date().toISOString()
+```
+Method: POST
+URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={{ $env.GEMINI_API_KEY }}
+Body (JSON):
+{
+  "contents": [{
+    "parts": [{
+      "text": "你的 prompt..."
+    }]
+  }],
+  "generationConfig": {
+    "temperature": 0.7,
+    "maxOutputTokens": 2048
   }
-};
+}
 ```
 
-#### 步驟 4: Anthropic Node - 生成內容
-使用 Claude API 生成文章：
-
-```
-Model: claude-sonnet-4-20250514
-Prompt: 根據以下資料撰寫技術部落格文章...
-Max Tokens: 2048
-```
-
-#### 步驟 5: Code Node - 準備檔案
+#### 步驟 4: Code Node - 解析 Gemini 回應
 ```javascript
-const content = $input.item.json.content;
+const response = $input.item.json;
+const content = response.candidates?.[0]?.content?.parts?.[0]?.text || '';
 const today = new Date();
 const slug = `auto-${today.toISOString().split('T')[0]}`;
 
@@ -144,7 +129,7 @@ return {
 };
 ```
 
-#### 步驟 6: HTTP Request - 建立 GitHub 檔案
+#### 步驟 5: HTTP Request - 建立 GitHub 檔案
 ```
 URL: https://api.github.com/repos/kulius/kulius.github.io/contents/{{ path }}
 Method: PUT
@@ -156,10 +141,10 @@ Body (JSON):
 }
 ```
 
-#### 步驟 7: Wait Node
+#### 步驟 6: Wait Node
 等待 60 秒讓 GitHub Actions 完成部署
 
-#### 步驟 8: Facebook Graph API
+#### 步驟 7: Facebook Graph API
 ```
 URL: https://graph.facebook.com/v18.0/{PAGE_ID}/feed
 Method: POST
@@ -177,9 +162,10 @@ Body:
 - 前往: https://github.com/settings/tokens
 - 需要權限: `repo` (讀寫 repository)
 
-### Anthropic API Key
-- 前往: https://console.anthropic.com/
+### Google Gemini API Key
+- 前往: https://aistudio.google.com/app/apikey
 - 建立 API Key
+- 免費方案每分鐘 15 次請求
 
 ### Facebook Page Access Token
 - 前往: https://developers.facebook.com/
@@ -204,6 +190,14 @@ Body:
 - The Verge: `https://www.theverge.com/rss/index.xml`
 - Wired: `https://www.wired.com/feed/rss`
 
+## Gemini 模型選項
+
+| 模型 | 說明 | 適用場景 |
+|------|------|----------|
+| gemini-2.0-flash | 最新快速模型 | 一般文章生成（推薦） |
+| gemini-1.5-pro | 進階模型 | 複雜內容生成 |
+| gemini-1.5-flash | 快速模型 | 簡短內容 |
+
 ## 故障排除
 
 ### n8n 無法連接
@@ -215,9 +209,12 @@ docker-compose logs n8n
 - 確認 Token 有效且有正確權限
 - 檢查 rate limit: https://api.github.com/rate_limit
 
-### Claude API 錯誤
+### Gemini API 錯誤
 - 確認 API Key 有效
-- 檢查額度是否足夠
+- 檢查配額: https://aistudio.google.com/app/apikey
+- 常見錯誤：
+  - `INVALID_API_KEY`: API Key 無效
+  - `RESOURCE_EXHAUSTED`: 超過配額限制
 
 ### Facebook 發布失敗
 - 確認 Page Access Token 未過期

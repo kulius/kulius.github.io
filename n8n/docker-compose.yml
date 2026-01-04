@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   n8n:
     image: docker.n8n.io/n8nio/n8n:latest
@@ -26,7 +24,7 @@ services:
       
       # External secrets (passed from .env file)
       - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
       - FB_PAGE_ACCESS_TOKEN=${FB_PAGE_ACCESS_TOKEN}
       - FB_PAGE_ID=${FB_PAGE_ID}
     volumes:

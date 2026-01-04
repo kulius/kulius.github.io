@@ -1,6 +1,6 @@
 # Kulius Blog - 自動化技術部落格
 
-使用 Astro 建構的技術部落格，搭配 n8n 自動化工作流程，自動蒐集 GitHub 活動和 RSS 新聞，透過 Claude AI 生成文章並發布到 GitHub Pages 和 Facebook 粉專。
+使用 Astro 建構的技術部落格，搭配 n8n 自動化工作流程，自動蒐集 GitHub 活動和 RSS 新聞，透過 Google Gemini AI 生成文章並發布到 GitHub Pages 和 Facebook 粉專。
 
 ## 系統架構
 
@@ -21,7 +21,7 @@
 │                        │                                     │
 │                        ▼                                     │
 │  ┌─────────────────────────────────────────┐                │
-│  │ Claude API → 生成 Markdown 文章         │                │
+│  │ Gemini API → 生成 Markdown 文章         │                │
 │  └─────────────────────────────────────────┘                │
 │                        │                                     │
 │                        ▼                                     │
@@ -48,7 +48,7 @@
 - **Tailwind CSS** - 實用優先的 CSS 框架
 - **動態 OG Image** - 自動為每篇文章生成社群分享圖片
 - **n8n 自動化** - 完整的內容生成工作流程
-- **Claude AI** - 智慧文章生成
+- **Google Gemini AI** - 智慧文章生成
 - **GitHub Actions** - 自動部署到 GitHub Pages
 - **Facebook 整合** - 自動發布到粉絲專頁
 
@@ -134,7 +134,7 @@ heroImage: "./image.jpg"  # 選填：封面圖片
 | 服務 | 用途 | 取得方式 |
 |------|------|----------|
 | GitHub Token | 讀寫 Repository | [GitHub Settings](https://github.com/settings/tokens) |
-| Anthropic API | Claude AI 生成 | [Anthropic Console](https://console.anthropic.com/) |
+| Google Gemini API | Google Gemini AI 生成 | [Google AI Studio](https://aistudio.google.com/app/apikey) |
 | Facebook Token | 粉專發布 | [Facebook Developers](https://developers.facebook.com/) |
 
 ## 部署
