@@ -1,7 +1,7 @@
 ---
 title: "製造業數位轉型：從傳統到智慧工廠"
 description: "探討製造業如何透過 ERP 系統實現數位轉型，提升生產效率與競爭力"
-published: "2024-11-15"
+published: 2024-11-15
 tags: ["數位轉型", "製造業", "ERP", "智慧工廠"]
 category: "digital-transformation"
 author: "蘇勃任"

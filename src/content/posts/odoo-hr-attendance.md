@@ -1,7 +1,7 @@
 ---
 title: "Odoo 人資出勤管理模組開發"
 description: "整合生物辨識打卡機、班表管理與加班計算的完整人資解決方案"
-published: "2024-12-10"
+published: 2024-12-10
 tags: ["Odoo", "HRM", "人資系統", "出勤管理"]
 category: "odoo"
 author: "蘇勃任"

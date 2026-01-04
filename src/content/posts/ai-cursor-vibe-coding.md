@@ -1,7 +1,7 @@
 ---
 title: "Cursor + Vibe Coding：AI 輔助開發新範式"
 description: "如何運用 Cursor 編輯器與 Vibe Coding 流程，實現高效的 AI 協作開發"
-published: "2024-12-18"
+published: 2024-12-18
 tags: ["AI", "Cursor", "開發工具", "Vibe Coding"]
 category: "ai"
 author: "蘇勃任"

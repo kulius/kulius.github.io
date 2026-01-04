@@ -1,7 +1,7 @@
 ---
 title: "Odoo 品質管理與檢驗系統開發"
 description: "製造業品質控管模組開發，整合來料檢驗、製程品管與出貨檢驗流程"
-published: "2024-11-28"
+published: 2024-11-28
 tags: ["Odoo", "QC", "品質管理", "製造業"]
 category: "odoo"
 author: "蘇勃任"

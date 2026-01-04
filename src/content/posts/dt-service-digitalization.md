@@ -1,7 +1,7 @@
 ---
 title: "服務業數位化：預約、排班、會員一次搞定"
 description: "服務業如何透過數位工具提升營運效率，從預約管理到會員經營的完整解決方案"
-published: "2024-11-25"
+published: 2024-11-25
 tags: ["數位轉型", "服務業", "預約系統", "會員管理"]
 category: "digital-transformation"
 author: "蘇勃任"

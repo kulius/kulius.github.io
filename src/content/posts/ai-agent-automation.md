@@ -1,7 +1,7 @@
 ---
 title: "AI Agent 自動化：從概念到實踐"
 description: "探索 AI Agent 如何實現複雜任務自動化，結合 LLM 與工具使用的新一代應用"
-published: "2024-12-22"
+published: 2024-12-22
 tags: ["AI", "Agent", "自動化", "LLM"]
 category: "ai"
 author: "蘇勃任"

@@ -1,7 +1,7 @@
 ---
 title: "Svelte 5 + Vite 快速開發指南"
 description: "使用 Svelte 5 的 Runes 語法與 Vite 建構現代化前端應用"
-published: "2024-12-12"
+published: 2024-12-12
 tags: ["Svelte", "Vite", "前端開發", "JavaScript"]
 category: "other"
 author: "蘇勃任"

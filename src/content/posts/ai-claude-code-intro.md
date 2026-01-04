@@ -1,7 +1,7 @@
 ---
 title: "Claude Code：AI 驅動的終端機程式開發工具"
 description: "探索 Anthropic 推出的 Claude Code，如何在終端機中透過自然語言完成程式開發任務"
-published: "2024-12-20"
+published: 2024-12-20
 tags: ["AI", "Claude", "開發工具", "Anthropic"]
 category: "ai"
 author: "蘇勃任"

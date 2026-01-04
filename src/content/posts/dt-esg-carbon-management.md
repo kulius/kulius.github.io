@@ -1,7 +1,7 @@
 ---
 title: "ESG 數位轉型：碳盤查與永續報告書系統化"
 description: "企業如何透過數位工具進行碳盤查、追蹤 ESG 指標，並自動化產生永續報告書"
-published: "2024-12-05"
+published: 2024-12-05
 tags: ["數位轉型", "ESG", "碳盤查", "永續發展"]
 category: "digital-transformation"
 author: "蘇勃任"

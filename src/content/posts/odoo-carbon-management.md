@@ -1,7 +1,7 @@
 ---
 title: "Odoo 碳盤查與 ESG 永續管理模組"
 description: "協助企業建立碳排放追蹤、永續報告與 ESG 合規管理系統"
-published: "2024-12-05"
+published: 2024-12-05
 tags: ["Odoo", "ESG", "碳盤查", "永續發展"]
 category: "odoo"
 author: "蘇勃任"

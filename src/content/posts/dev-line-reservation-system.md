@@ -1,7 +1,7 @@
 ---
 title: "LINE 預約系統開發：從需求到上線"
 description: "透過 LINE 官方帳號打造預約系統，讓顧客輕鬆完成服務預約"
-published: "2024-12-10"
+published: 2024-12-10
 tags: ["LINE", "預約系統", "LIFF", "Odoo"]
 category: "other"
 author: "蘇勃任"

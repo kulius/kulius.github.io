@@ -1,7 +1,7 @@
 ---
 title: "LINE LIFF 打卡系統開發實戰"
 description: "使用 LINE LIFF SDK 開發門市打卡應用，整合 GPS 定位與 Odoo 後端"
-published: "2024-12-08"
+published: 2024-12-08
 tags: ["LINE", "LIFF", "打卡系統", "Svelte"]
 category: "other"
 author: "蘇勃任"

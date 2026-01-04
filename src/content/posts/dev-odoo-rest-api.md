@@ -1,7 +1,7 @@
 ---
 title: "Odoo REST API 開發與整合"
 description: "設計與實作 Odoo REST API，提供外部系統整合與行動應用存取"
-published: "2024-12-18"
+published: 2024-12-18
 tags: ["Odoo", "REST API", "整合開發", "JSON"]
 category: "other"
 author: "蘇勃任"

@@ -1,7 +1,7 @@
 ---
 title: "貿易業進銷存自動化：從報價到出貨的完整流程"
 description: "貿易公司如何透過 ERP 系統自動化進銷存流程，提升報價效率與庫存管理"
-published: "2024-12-01"
+published: 2024-12-01
 tags: ["數位轉型", "貿易業", "進銷存", "自動化"]
 category: "digital-transformation"
 author: "蘇勃任"

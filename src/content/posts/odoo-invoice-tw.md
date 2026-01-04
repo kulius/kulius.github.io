@@ -1,7 +1,7 @@
 ---
 title: "Odoo 台灣電子發票整合開發"
 description: "整合財政部電子發票 API，實現 B2B、B2C 發票自動開立與作廢"
-published: "2024-11-20"
+published: 2024-11-20
 tags: ["Odoo", "電子發票", "台灣", "API整合"]
 category: "odoo"
 author: "蘇勃任"

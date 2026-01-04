@@ -1,7 +1,7 @@
 ---
 title: "Model Context Protocol (MCP)：AI 工具整合新標準"
 description: "了解 Anthropic 推出的 MCP 協定，如何讓 AI 模型連接各種外部工具與資料來源"
-published: "2024-12-12"
+published: 2024-12-12
 tags: ["AI", "MCP", "Claude", "整合"]
 category: "ai"
 author: "蘇勃任"

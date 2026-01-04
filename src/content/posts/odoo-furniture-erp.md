@@ -1,7 +1,7 @@
 ---
 title: "辦公家具業 ERP 系統開發實戰"
 description: "針對辦公家具產業特性，客製化 Odoo 17 訂單管理、報價系統與庫存追蹤功能"
-published: "2024-12-15"
+published: 2024-12-15
 tags: ["Odoo", "ERP", "家具業", "客製化開發"]
 category: "odoo"
 author: "蘇勃任"

@@ -1,7 +1,7 @@
 ---
 title: "Google Gemini API 整合實戰"
 description: "運用 Google Gemini API 建構智慧應用，從文字生成到多模態處理"
-published: "2024-12-25"
+published: 2024-12-25
 tags: ["AI", "Gemini", "Google", "API"]
 category: "ai"
 author: "蘇勃任"

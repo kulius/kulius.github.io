@@ -18,4 +18,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 # private config
+.env
 .env.env
+n8n/.env
+.claude/

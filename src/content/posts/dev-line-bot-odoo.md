@@ -1,7 +1,7 @@
 ---
 title: "LINE Bot 與 Odoo 整合開發"
 description: "建構 LINE Bot 串接 Odoo ERP，實現訂單查詢、庫存通知等自動化功能"
-published: "2024-12-15"
+published: 2024-12-15
 tags: ["LINE Bot", "Odoo", "API", "Webhook"]
 category: "other"
 author: "蘇勃任"

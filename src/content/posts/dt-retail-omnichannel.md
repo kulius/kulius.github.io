@@ -1,7 +1,7 @@
 ---
 title: "零售業全通路轉型：線上線下整合策略"
 description: "零售業如何透過數位工具實現 OMO 全通路整合，提升顧客體驗與營運效率"
-published: "2024-11-22"
+published: 2024-11-22
 tags: ["數位轉型", "零售業", "OMO", "全通路"]
 category: "digital-transformation"
 author: "蘇勃任"
