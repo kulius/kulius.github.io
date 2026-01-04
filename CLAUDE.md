@@ -25,18 +25,19 @@ kulius.github.io/
 │   ├── i18n/                # 多語系設定
 │   ├── utils/               # 工具函式
 │   └── config.ts            # 網站設定檔
+├── scripts/
+│   ├── generate-article.py  # 文章自動生成腳本
+│   ├── requirements.txt     # Python 依賴
+│   └── run.bat              # Windows 快捷執行
 ├── public/
 │   └── CNAME                # 自訂網域設定
-├── n8n/
-│   ├── docker-compose.yml   # n8n Docker 設定
-│   └── workflows/           # n8n 工作流程 JSON
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml       # GitHub Actions 部署
 ├── astro.config.mjs         # Astro 設定
 ├── tsconfig.json            # TypeScript 設定
 ├── package.json             # npm 依賴
-└── pnpm-lock.yaml           # pnpm lockfile
+└── package-lock.json        # npm lockfile
 ```
 
 ---
@@ -102,7 +103,15 @@ author: "蘇勃任"
 
 ## 文章自動生成腳本
 
-使用 Python 腳本 + Gemini API 自動生成文章。
+使用 Python 腳本 + Gemini API 自動生成技術文章，每週執行一次即可。
+
+### 檔案位置
+```
+scripts/
+├── generate-article.py  # 主要腳本
+├── requirements.txt     # Python 依賴 (只需 requests)
+└── run.bat              # Windows 快捷執行
+```
 
 ### 安裝
 ```bash
@@ -113,20 +122,22 @@ pip install -r requirements.txt
 ### 設定環境變數
 ```bash
 # Windows (PowerShell)
-$env:GEMINI_API_KEY="your-gemini-api-key"
-$env:GITHUB_TOKEN="your-github-token"
+$env:GEMINI_API_KEY="AIzaSy..."
+$env:GITHUB_TOKEN="ghp_..."
 
 # Windows (CMD)
-set GEMINI_API_KEY=your-gemini-api-key
-set GITHUB_TOKEN=your-github-token
+set GEMINI_API_KEY=AIzaSy...
+set GITHUB_TOKEN=ghp_...
 
 # Linux/Mac
-export GEMINI_API_KEY="your-gemini-api-key"
-export GITHUB_TOKEN="your-github-token"
+export GEMINI_API_KEY="AIzaSy..."
+export GITHUB_TOKEN="ghp_..."
 ```
 
 ### 使用方式
 ```bash
+cd scripts
+
 # 自動選擇類別（依日期輪替）
 python generate-article.py
 
@@ -136,31 +147,53 @@ python generate-article.py --category ai
 python generate-article.py --category dt
 python generate-article.py --category dev
 
-# 測試模式（生成但不上傳）
+# 測試模式（生成但不上傳 GitHub）
 python generate-article.py --dry-run
 
-# 只儲存本地（之後手動 git push）
+# 只儲存本地（之後手動 git add/commit/push）
 python generate-article.py --local-only
+
+# 指定輸出檔名
+python generate-article.py --output my-article.md --local-only
 ```
 
-### 四大類別
-| 類別 ID | 名稱 | 標籤 |
-|---------|------|------|
-| odoo | Odoo 客製化開發 | Odoo, ERP, 客製化 |
-| ai | AI 智慧應用 | AI, Claude, LLM |
-| dt | 企業數位轉型 | 數位轉型, ERP, 企業管理 |
-| dev | 其他開發 | LINE, Svelte, Web開發 |
+### 四大類別輪替
+| 日期 % 4 | 類別 ID | 名稱 | 標籤 |
+|----------|---------|------|------|
+| 0 | odoo | Odoo 客製化開發 | Odoo, ERP, 客製化 |
+| 1 | ai | AI 智慧應用 | AI, Claude, LLM |
+| 2 | dt | 企業數位轉型 | 數位轉型, ERP, 企業管理 |
+| 3 | dev | 其他開發 | LINE, Svelte, Web開發 |
 
-### 取得 API 金鑰
+### 腳本功能
+- **Gemini API** - 使用 `gemini-2.0-flash` 模型生成 800-1500 字文章
+- **自動重試** - API 限流時自動等待 30/60/90 秒後重試
+- **本地儲存** - 文章自動存到 `src/content/posts/`
+- **GitHub 上傳** - 可選擇直接透過 API 上傳到 GitHub
+- **Windows 相容** - 已處理 UTF-8 編碼問題
+
+### API 金鑰取得
 
 **Gemini API**：
 1. 前往 https://aistudio.google.com/app/apikey
-2. 建立 API 金鑰
+2. 點選「建立 API 金鑰」
+3. 免費版有每日請求限制（約 60 次/分鐘）
 
 **GitHub Token**：
 1. 前往 GitHub Settings > Developer settings > Personal access tokens
-2. 建立 Fine-grained token
-3. 權限：Contents (Read and write)
+2. 選擇 Fine-grained tokens > Generate new token
+3. 設定 Repository access: `kulius/kulius.github.io`
+4. 權限：Contents (Read and write)
+
+### API 限制說明
+Gemini 免費版有請求限制：
+- 每分鐘 60 次請求
+- 每日有總量限制
+
+遇到 `429 Too Many Requests` 錯誤時：
+1. 等待幾分鐘後重試
+2. 或等隔天配額重置
+3. 或申請新的 API Key
 
 ---
 
