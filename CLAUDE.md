@@ -100,69 +100,67 @@ author: "蘇勃任"
 
 ---
 
-## n8n 自動化設定
+## 文章自動生成腳本
 
-### Docker 啟動
+使用 Python 腳本 + Gemini API 自動生成文章。
+
+### 安裝
 ```bash
-cd n8n
-cp .env.example .env          # 複製並編輯環境變數
-docker-compose up -d          # 啟動 n8n
+cd scripts
+pip install -r requirements.txt
 ```
 
-啟動後訪問：http://localhost:5678
+### 設定環境變數
+```bash
+# Windows (PowerShell)
+$env:GEMINI_API_KEY="your-gemini-api-key"
+$env:GITHUB_TOKEN="your-github-token"
 
-### 工作流程設計
-檔案位置：`n8n/workflows/daily-content-generation.json`
+# Windows (CMD)
+set GEMINI_API_KEY=your-gemini-api-key
+set GITHUB_TOKEN=your-github-token
 
-**流程架構**：
-```
-Daily Trigger (08:00)
-    ↓
-Select Category (四大類別輪替)
-    ↓
-RSS 蒐集 (Hacker News / Dev.to / Odoo Blog)
-    ↓
-Merge Data
-    ↓
-Gemini Generate (gemini-2.0-flash-exp)
-    ↓
-Prepare Content
-    ↓
-GitHub Create File (src/content/posts/)
-    ↓
-Facebook Post (可選，預設停用)
+# Linux/Mac
+export GEMINI_API_KEY="your-gemini-api-key"
+export GITHUB_TOKEN="your-github-token"
 ```
 
-**四大類別輪替**：
-| 日期 % 4 | 類別 | slug | 標籤 |
-|----------|------|------|------|
-| 0 | Odoo 客製化開發 | odoo | Odoo, ERP, 客製化 |
-| 1 | AI 智慧應用 | ai | AI, Claude, LLM |
-| 2 | 企業數位轉型 | dt | 數位轉型, ERP, 企業管理 |
-| 3 | 其他開發 | dev | LINE, Svelte, Web開發 |
+### 使用方式
+```bash
+# 自動選擇類別（依日期輪替）
+python generate-article.py
 
-### 環境變數 (n8n/.env)
-```env
-# n8n 登入帳密
-N8N_BASIC_AUTH_USER=admin
-N8N_BASIC_AUTH_PASSWORD=your-secure-password
+# 指定類別
+python generate-article.py --category odoo
+python generate-article.py --category ai
+python generate-article.py --category dt
+python generate-article.py --category dev
 
-# GitHub API (必要)
-GITHUB_TOKEN=ghp_xxx
+# 測試模式（生成但不上傳）
+python generate-article.py --dry-run
 
-# Gemini API (必要)
-GEMINI_API_KEY=AIzaSy...
-
-# Facebook (可選)
-FB_PAGE_ID=your-page-id
-FB_PAGE_ACCESS_TOKEN=your-token
+# 只儲存本地（之後手動 git push）
+python generate-article.py --local-only
 ```
 
-### 匯入工作流程
-1. 開啟 n8n (http://localhost:5678)
-2. 點選 Settings > Import from File
-3. 選擇 `n8n/workflows/daily-content-generation.json`
-4. 設定 GitHub Token 憑證 (HTTP Header Auth: `Authorization: token YOUR_TOKEN`)
+### 四大類別
+| 類別 ID | 名稱 | 標籤 |
+|---------|------|------|
+| odoo | Odoo 客製化開發 | Odoo, ERP, 客製化 |
+| ai | AI 智慧應用 | AI, Claude, LLM |
+| dt | 企業數位轉型 | 數位轉型, ERP, 企業管理 |
+| dev | 其他開發 | LINE, Svelte, Web開發 |
+
+### 取得 API 金鑰
+
+**Gemini API**：
+1. 前往 https://aistudio.google.com/app/apikey
+2. 建立 API 金鑰
+
+**GitHub Token**：
+1. 前往 GitHub Settings > Developer settings > Personal access tokens
+2. 建立 Fine-grained token
+3. 權限：Contents (Read and write)
 
 ---
 
