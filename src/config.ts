@@ -12,173 +12,173 @@ import type {
 import { LinkPreset } from "./types/config";
 
 /**
- * 
+ *
  */
 
-// 设置浏览器语言 ('zh', 'en', ...)
+// 設定瀏覽器語言 ('zh', 'en', ...)
 const SITE_LANG = "zh";
 
-// 设置网站时区 (from -12 to 12)
+// 設定網站時區 (from -12 to 12)
 const SITE_TIMEZONE = 8; // UTC+8
 
 
-// 站点配置
+// 網站配置
 export const siteConfig: SiteConfig = {
-    // 站点 URL（以斜杠结尾）
-    siteURL: "https://www.euptop.com/", // 请替换为你的站点 URL 并以斜杠结尾
-    // 站点标题
+    // 網站 URL（以斜線結尾）
+    siteURL: "https://www.euptop.com/", // 請替換為你的網站 URL 並以斜線結尾
+    // 網站標題
     title: "蘇勃任 | Odoo 技術筆記",
-    // 站点副标题
+    // 網站副標題
     subtitle: "Odoo ERP 客製化開發、AI 整合應用、企業數位轉型",
-    // 语言配置
-    lang: SITE_LANG, // 自动检测的浏览器语言
-    // 翻译配置
+    // 語言配置
+    lang: SITE_LANG, // 自動檢測的瀏覽器語言
+    // 翻譯配置
     translate: {
-        // 启用翻译功能
+        // 啟用翻譯功能
         enable: false,
-        // 翻译服务
-        service: "client.edge", // 使用 Edge 浏览器
-        // 显示语言选择下拉框
-        showSelectTag: false, // 使用自定义按钮
-        // 自动检测用户语言
+        // 翻譯服務
+        service: "client.edge", // 使用 Edge 瀏覽器
+        // 顯示語言選擇下拉框
+        showSelectTag: false, // 使用自訂按鈕
+        // 自動檢測使用者語言
         autoDiscriminate: true,
-        // 翻译时忽略的 CSS 类名
+        // 翻譯時忽略的 CSS 類名
         ignoreClasses: ["ignore", "banner-title", "banner-subtitle"],
-        // 翻译时忽略的 HTML 标签
+        // 翻譯時忽略的 HTML 標籤
         ignoreTags: ["script", "style", "code", "pre"],
     },
-    // 时区配置
+    // 時區配置
     timeZone: SITE_TIMEZONE,
-    // 字体配置
+    // 字型配置
     font: {
-        // zenMaruGothic 字体 (适合日语和英语，对中文适配一般)
+        // zenMaruGothic 字型 (適合日語和英語，對中文適配一般)
         zenMaruGothic: {
-            // 作为全局字体
+            // 作為全域字型
             enable: false,
         },
-        // Hanalei 字体 (适合中文)
+        // Hanalei 字型 (適合中文)
         hanalei: {
-            // 作为全局字体
+            // 作為全域字型
             enable: false,
         },
     },
-    // 主题色配置
+    // 主題色配置
     themeColor: {
-        // 主题色的默认色相 (范围从 0 到 360。例如：红色：0，青色：200，蓝绿色：250，粉色：345)
+        // 主題色的預設色相 (範圍從 0 到 360。例如：紅色：0，青色：200，藍綠色：250，粉色：345)
         hue: 255,
-        // 对访问者隐藏主题色选择器
+        // 對訪問者隱藏主題色選擇器
         fixed: false,
     },
-    // 默认主题 ("system" 跟随系统 | "light" 浅色 | "dark" 深色)
+    // 預設主題 ("system" 跟隨系統 | "light" 淺色 | "dark" 深色)
     defaultTheme: "dark",
-    // 壁纸配置
+    // 桌布配置
     wallpaper: {
-        // 模式 ("banner" 横幅 | "fullscreen" 全屏 | "none" 纯色)
+        // 模式 ("banner" 橫幅 | "fullscreen" 全螢幕 | "none" 純色)
         mode: "banner",
-        // 图片源配置 (fullscreen 和 banner 模式共享)
+        // 圖片來源配置 (fullscreen 和 banner 模式共用)
         src: {
-            // 桌面壁纸图片 (支持单张图片或图片数组，当数组长度 > 1 时自动启用轮播)
+            // 桌面桌布圖片 (支援單張圖片或圖片陣列，當陣列長度 > 1 時自動啟用輪播)
             desktop: [
                 "/assets/desktop-banner/desktopBanner_1.webp",
                 "/assets/desktop-banner/desktopBanner_2.webp",
                 "/assets/desktop-banner/desktopBanner_3.webp",
             ],
-            // 移动壁纸图片 (支持单张图片或图片数组，当数组长度 > 1 时自动启用轮播)
+            // 行動裝置桌布圖片 (支援單張圖片或圖片陣列，當陣列長度 > 1 時自動啟用輪播)
             mobile: [
                 "/assets/mobile-banner/mobileBanner_1.webp",
                 "/assets/mobile-banner/mobileBanner_2.webp",
             ],
         },
-        // 壁纸位置 ('top' | 'center' | 'bottom')
+        // 桌布位置 ('top' | 'center' | 'bottom')
         position: "center",
-        // 轮播配置 (fullscreen 和 banner 模式共享)
+        // 輪播配置 (fullscreen 和 banner 模式共用)
         carousel: {
-            // 为多张图片启用轮播，否则随机显示一张图片
+            // 為多張圖片啟用輪播，否則隨機顯示一張圖片
             enable: false,
-            // 轮播间隔时间 (秒)
+            // 輪播間隔時間 (秒)
             interval: 3.6,
-            // 启用 Ken Burns 效果
+            // 啟用 Ken Burns 效果
             kenBurns: true,
         },
-        // Banner 模式专属配置
+        // Banner 模式專屬配置
         banner: {
-            // 横幅文本配置
+            // 橫幅文字配置
             homeText: {
-                // 在主页显示文本
+                // 在首頁顯示文字
                 enable: false,
-                // 主标题
+                // 主標題
                 title: "蘇勃任 | Odoo 技術筆記",
-                // 副标题，支持单个字符串或字符串数组
+                // 副標題，支援單個字串或字串陣列
                 subtitle: [
                     "Odoo 技術筆記", "AI 整合應用", "企業數位轉型",
                 ],
-                // 副标题打字机效果
+                // 副標題打字機效果
                 typewriter: {
-                    // 启用副标题打字机效果
+                    // 啟用副標題打字機效果
                     enable: false,
                     // 打字速度 (毫秒)
                     speed: 111,
-                    // 删除速度 (毫秒)
+                    // 刪除速度 (毫秒)
                     deleteSpeed: 51,
-                    // 完全显示后的暂停时间 (毫秒)
+                    // 完全顯示後的暫停時間 (毫秒)
                     pauseTime: 3000,
                 },
             },
-            // 横幅图片来源文本
+            // 橫幅圖片來源文字
             credit: {
-                // 显示横幅图片来源文本
+                // 顯示橫幅圖片來源文字
                 enable: false,
-                // 要显示的来源文本
+                // 要顯示的來源文字
                 text: "Describe",
-                // (可选) 原始艺术品或艺术家页面的 URL 链接
+                // (可選) 原始藝術作品或藝術家頁面的 URL 連結
                 url: "",
             },
-            // 导航栏配置
+            // 導覽列配置
             navbar: {
-                // 导航栏透明模式 ("semi" 半透明加圆角 | "full" 完全透明 | "semifull" 动态透明)
+                // 導覽列透明模式 ("semi" 半透明加圓角 | "full" 完全透明 | "semifull" 動態透明)
                 transparentMode: "semifull",
             },
-            // 水波纹效果配置
+            // 水波紋效果配置
             waves: {
-                // 启用水波纹效果
+                // 啟用水波紋效果
                 enable: false,
-                // 启用性能模式 (简化波浪效果以提升性能)
+                // 啟用效能模式 (簡化波浪效果以提升效能)
                 performanceMode: false,
             },
         },
-        // Fullscreen 模式专属配置
+        // Fullscreen 模式專屬配置
         fullscreen: {
-            // 层级
-            zIndex: -1, // 确保壁纸在背景层
-            // 壁纸透明度，0-1之间
+            // 層級
+            zIndex: -1, // 確保桌布在背景層
+            // 桌布透明度，0-1之間
             opacity: 0.9,
             // 背景模糊程度 (像素值)
             blur: 1,
-            // 导航栏透明模式
+            // 導覽列透明模式
             navbar: {
                 transparentMode: "semi", // 使用半透明模式而不是完全透明
             },
         },
     },
     // OpenGraph 配置
-    generateOgImages: false, // 注意开启图片生成后要渲染很长时间，不建议本地调试的时候开启
+    generateOgImages: false, // 注意開啟圖片生成後要渲染很長時間，不建議本地除錯的時候開啟
     // favicon 配置
     favicon: [
     ],
     // bangumi 配置
     bangumi: {
-        // 用户 ID
-        userId: "your-bangumi-id", // 可以设置为 "sai" 测试
+        // 使用者 ID
+        userId: "your-bangumi-id", // 可以設定為 "sai" 測試
     },
 };
 
 /**
- * 
+ *
  */
 
-// 导航栏配置
+// 導覽列配置
 export const navBarConfig: NavBarConfig = {
-    // 链接配置 (支持多级菜单)
+    // 連結配置 (支援多級選單)
     links: [
         LinkPreset.Home,
         LinkPreset.Archive,
@@ -227,94 +227,94 @@ export const navBarConfig: NavBarConfig = {
 };
 
 /**
- * 
+ *
  */
 
-// 侧边栏布局配置
+// 側邊欄佈局配置
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
-    // 侧边栏组件配置列表
+    // 側邊欄元件配置列表
     components: [
         {
-            // 组件类型
-            type: "profile", // 用户资料组件
-            // 是否启用该组件
+            // 元件類型
+            type: "profile", // 使用者資料元件
+            // 是否啟用該元件
             enable: false,
-            // 组件所属侧边栏
+            // 元件所屬側邊欄
             side: "left",
-            // 组件显示顺序 (数字越小越靠前)
+            // 元件顯示順序 (數字越小越靠前)
             order: 1,
-            // 组件位置
-            position: "top", // 固定在顶部
+            // 元件位置
+            position: "top", // 固定在頂部
         },
         {
-            // 组件类型
-            type: "announcement", // 公告组件
-            // 是否启用该组件
+            // 元件類型
+            type: "announcement", // 公告元件
+            // 是否啟用該元件
             enable: false,
-            // 组件所属侧边栏
+            // 元件所屬側邊欄
             side: "left",
-            // 组件显示顺序 (数字越小越靠前)
+            // 元件顯示順序 (數字越小越靠前)
             order: 2,
-            // 组件位置
-            position: "top", // 固定在顶部
+            // 元件位置
+            position: "top", // 固定在頂部
         },
         {
-            // 组件类型
-            type: "categories", // 分类组件
-            // 是否启用该组件
+            // 元件類型
+            type: "categories", // 分類元件
+            // 是否啟用該元件
             enable: false,
-            // 组件所属侧边栏
+            // 元件所屬側邊欄
             side: "left",
-            // 组件显示顺序 (数字越小越靠前)
+            // 元件顯示順序 (數字越小越靠前)
             order: 3,
-            // 组件位置
-            position: "sticky", // 粘性定位，可滚动
-            // 响应式配置
+            // 元件位置
+            position: "sticky", // 黏性定位，可捲動
+            // 響應式配置
             responsive: {
-                // 折叠阈值
-                collapseThreshold: 5, // 当分类数量超过5个时自动折叠
+                // 摺疊閾值
+                collapseThreshold: 5, // 當分類數量超過5個時自動摺疊
             },
         },
         {
-            // 组件类型
-            type: "tags", // 标签组件
-            // 是否启用该组件
+            // 元件類型
+            type: "tags", // 標籤元件
+            // 是否啟用該元件
             enable: false,
-            // 组件所属侧边栏
+            // 元件所屬側邊欄
             side: "left",
-            // 组件显示顺序 (数字越小越靠前)
+            // 元件顯示順序 (數字越小越靠前)
             order: 4,
-            // 组件位置
-            position: "sticky", // 粘性定位，可滚动
-            // 响应式配置
+            // 元件位置
+            position: "sticky", // 黏性定位，可捲動
+            // 響應式配置
             responsive: {
-                // 折叠阈值
-                collapseThreshold: 20, // 当标签数量超过20个时自动折叠
+                // 摺疊閾值
+                collapseThreshold: 20, // 當標籤數量超過20個時自動摺疊
             },
         },
         {
-            // 组件类型
-            type: "toc", // 目录组件
-            // 是否启用该组件
+            // 元件類型
+            type: "toc", // 目錄元件
+            // 是否啟用該元件
             enable: false,
-            // 组件所属侧边栏
+            // 元件所屬側邊欄
             side: "right",
-            // 组件显示顺序 (数字越小越靠前)
+            // 元件顯示順序 (數字越小越靠前)
             order: 1,
-            // 组件位置
-            position: "sticky", // 粘性定位，可滚动
-            // 自定义属性
+            // 元件位置
+            position: "sticky", // 黏性定位，可捲動
+            // 自訂屬性
             customProps: {
-                // 目录深度 (1-6，1 表示只显示 h1 标题，2 表示显示 h1 和 h2 标题，依此类推)
+                // 目錄深度 (1-6，1 表示只顯示 h1 標題，2 表示顯示 h1 和 h2 標題，依此類推)
                 depth: 3,
             },
         },
     ],
-    // 响应式布局配置
+    // 響應式佈局配置
     responsive: {
-        // 不同设备的布局模式 ("hidden" 不显示侧边栏 | "drawer" 抽屉模式 | "sidebar" 显示侧边栏)
+        // 不同裝置的佈局模式 ("hidden" 不顯示側邊欄 | "drawer" 抽屜模式 | "sidebar" 顯示側邊欄)
         layout: {
-            // 移动端
+            // 行動端
             mobile: "sidebar",
             // 平板端
             tablet: "sidebar",
@@ -325,28 +325,28 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 };
 
 
-// Umami统计配置
+// Umami 統計配置
 export const umamiConfig = {
-    // 是否显示Umami统计
+    // 是否顯示 Umami 統計
     enabled: false,
-    // API密钥
+    // API 金鑰
     apiKey: import.meta.env.UMAMI_API_KEY,
-    // UmamiCloudAPI地址
+    // Umami Cloud API 地址
     baseUrl: "https://api.umami.is",
-    // 要插入的Script
+    // 要插入的 Script
     scripts: import.meta.env.UMAMI_TRACKING_CODE,
 } as const;
 
 
-// 资料配置
+// 個人資料配置
 export const profileConfig: ProfileConfig = {
-    // 头像配置 (相对于 /src 目录。如果以 '/' 开头，则相对于 /public 目录)
+    // 頭像配置 (相對於 /src 目錄。如果以 '/' 開頭，則相對於 /public 目錄)
     avatar: "assets/images/avatar.png",
-    // 信息配置
+    // 資訊配置
     name: "蘇勃任",
-    // 简介配置
+    // 簡介配置
     bio: "Odoo 技術顧問 | AI 整合專家",
-    // 链接配置
+    // 連結配置
     links: [
         {
             name: "GitHub",
@@ -359,92 +359,92 @@ export const profileConfig: ProfileConfig = {
 
 // 公告配置
 export const announcementConfig: AnnouncementConfig = {
-    // 公告标题
+    // 公告標題
     title: "公告",
-    // 公告内容
+    // 公告內容
     content: "歡迎來到我的技術部落格！分享 Odoo 開發與 AI 整合實戰經驗",
-    // 允许用户关闭公告
+    // 允許使用者關閉公告
     closable: true,
-    // 链接配置
+    // 連結配置
     link: {
-        // 启用链接
+        // 啟用連結
         enable: false,
-        // 链接文本
+        // 連結文字
         text: "了解更多",
-        // 链接 URL
+        // 連結 URL
         url: "/about/",
-        // 是否外部链接
-        external: false, // 内部链接
+        // 是否外部連結
+        external: false, // 內部連結
     },
 };
 
 /**
- * 
+ *
  */
 
 // 文章配置
 export const postConfig: PostConfig = {
-    // 显示“上次编辑”卡片
+    // 顯示「上次編輯」卡片
     showLastModified: true,
-    // 在文章内容中显示封面
+    // 在文章內容中顯示封面
     showCoverInContent: false,
-    // 代码高亮配置
+    // 程式碼高亮配置
     expressiveCode: {
-        // 主题
+        // 主題
         theme: "github-dark", // 深色背景
     },
-    // 许可证配置
+    // 授權配置
     license: {
-        // 启用许可证
+        // 啟用授權
         enable: false,
-        // 许可证名称
+        // 授權名稱
         name: "CC BY-NC-SA 4.0",
-        // 许可证链接
+        // 授權連結
         url: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
     },
-    // 评论配置
+    // 評論配置
     comment: {
-        // 启用评论功能
+        // 啟用評論功能
         enable: false,
-        // Twikoo 评论系统配置
+        // Twikoo 評論系統配置
         twikoo: {
-            // 环境 ID
+            // 環境 ID
             envId: "https://twikoo.vercel.app",
-            // 语言
-            lang: SITE_LANG, // 默认使用站点语言
+            // 語言
+            lang: SITE_LANG, // 預設使用網站語言
         },
     },
 };
 
 /**
- * 
+ *
  */
 
-// 页脚配置
+// 頁尾配置
 export const footerConfig: FooterConfig = {
-    // 启用 Footer HTML 注入功能
+    // 啟用 Footer HTML 注入功能
     enable: false,
-    // 自定义 HTML 内容，用于添加备案号等信息
+    // 自訂 HTML 內容，用於添加備案號等資訊
     customHtml: "",
 };
 
 /**
- * 
+ *
  */
 
 // 粒子特效配置
 export const particleConfig: ParticleConfig = {
-    // 启用粒子特效
+    // 啟用粒子特效
     enable: false,
-    // 粒子数量
+    // 粒子數量
     particleNum: 12,
-    // 粒子越界限制次数，-1为无限循环
+    // 粒子越界限制次數，-1為無限迴圈
     limitTimes: -1,
     // 粒子尺寸配置
     size: {
-        // 粒子最小尺寸倍数
+        // 粒子最小尺寸倍數
         min: 0.3,
-        // 粒子最大尺寸倍数
+        // 粒子最大尺寸倍數
         max: 0.9,
     },
     // 粒子透明度配置
@@ -454,65 +454,65 @@ export const particleConfig: ParticleConfig = {
         // 粒子最大不透明度
         max: 0.9,
     },
-    // 粒子移动速度配置
+    // 粒子移動速度配置
     speed: {
-        // 水平移动速度
+        // 水平移動速度
         horizontal: {
             // 最小值
             min: -0.9,
             // 最大值
             max: 0.9,
         },
-        // 垂直移动速度
+        // 垂直移動速度
         vertical: {
             // 最小值
             min: 0.15,
             // 最大值
             max: 0.3,
         },
-        // 旋转速度
+        // 旋轉速度
         rotation: 0.12,
         // 消失速度
-        fadeSpeed: 0.12, // 不应大于最小不透明度
+        fadeSpeed: 0.12, // 不應大於最小不透明度
     },
-    // 粒子层级
-    zIndex: 100, // 确保粒子在合适的层级显示
+    // 粒子層級
+    zIndex: 100, // 確保粒子在合適的層級顯示
 };
 
 
-// 音乐播放器配置
+// 音樂播放器配置
 export const musicPlayerConfig: MusicPlayerConfig = {
-    // 启用音乐播放器功能
+    // 啟用音樂播放器功能
     enable: false,
-    // 默认模式 ("meting" API | "local" 本地)
+    // 預設模式 ("meting" API | "local" 本地)
     mode: "meting",
-    // meting 模式专属配置
+    // meting 模式專屬配置
     meting: {
         // Meting API 地址
         meting_api: "https://api.i-meto.com/meting/api",
-        // 音乐平台
+        // 音樂平台
         server: "netease",
-        // 类型 ("playlist" 歌单 | "song" 单曲)
+        // 類型 ("playlist" 歌單 | "song" 單曲)
         type: "playlist",
-        // 资源 ID
+        // 資源 ID
         id: "2161912966",
     },
-    // local 模式专属配置
+    // local 模式專屬配置
     local: {
         // 播放列表
         playlist: [
             {
-                // 序号
+                // 序號
                 id: 1,
-                // 标题
+                // 標題
                 title: "深海之息",
                 // 作者
                 artist: "Youzee Music",
                 // 封面
                 cover: "https://p1.music.126.net/PhKOqFtljgHDDpKYM2ADUA==/109951169858309716.jpg",
-                // 路径
+                // 路徑
                 url: "assets/music/url/深海之息.m4a",
-                // 时长
+                // 時長
                 duration: 146,
             },
         ],
@@ -522,38 +522,38 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 
 // 看板娘配置
 export const pioConfig: import("./types/config").PioConfig = {
-    // 启用看板娘
+    // 啟用看板娘
     enable: false,
-    // 模型文件路径
+    // 模型檔案路徑
     models: ["/pio/models/pio/model.json"],
     // 看板娘位置
     position: "left",
-    // 看板娘宽度
+    // 看板娘寬度
     width: 280,
     // 看板娘高度
     height: 250,
-    // 展现模式
+    // 展現模式
     mode: "draggable",
-    // 是否在移动设备上隐藏
+    // 是否在行動裝置上隱藏
     hiddenOnMobile: true,
-    // 对话框配置
+    // 對話框配置
     dialog: {
-        // 欢迎词
+        // 歡迎詞
         welcome: "Welcome!",
-        // 触摸提示
+        // 觸摸提示
         touch: [
             "What are you doing?",
             "Stop touching me!",
             "Don't bully me like that!",
             "(｡í _ ì｡)",
         ],
-        // 首页提示
+        // 首頁提示
         home: "Click here to go back to homepage!",
-        // 换装提示
+        // 換裝提示
         skin: ["Want to see my new outfit?", "The new outfit looks great~"],
-        // 关闭提示
+        // 關閉提示
         close: "See you next time~",
-        // 关于链接
+        // 關於連結
         link: "https://nav.kungal.org",
     },
 };
